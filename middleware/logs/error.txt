@@ -41,3 +41,5 @@
 20230922	19:14:23	0319a667-64eb-4f8b-8f7b-3d68a7d9af61	TypeError: Cannot read properties of undefined (reading 'id')
 20230922	19:14:23	65ff8ed5-b5bd-442b-8f60-366d82b20c4e	TypeError: Cannot read properties of undefined (reading 'id')
 20230922	19:14:33	8c94a1ea-51b0-485d-937e-537af52f7c46	TypeError: Cannot read properties of undefined (reading 'id')
+20230922	20:58:56	a497a195-a2cd-4715-a67f-9fffaaa19573	SyntaxError: Unexpected token - in JSON at position 0
+20230922	21:01:26	d2ca89d5-4172-4470-bf7a-4170d3da2b30	TypeError: data.setEmployees is not a function

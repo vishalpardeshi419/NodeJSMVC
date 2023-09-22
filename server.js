@@ -20,19 +20,21 @@ app.use(express.json());
 
 //serve static files 
 app.use('/', express.static(path.join(__dirname, '/public')));
-app.use('/subdir', express.static(path.join(__dirname, '/public')));
+// app.use('/subdir', express.static(path.join(__dirname, '/public')));
 
 // SETUP ROUTE
 app.use('/', require('./routes/root'));
+app.use('/register', require('./routes/register'));
+
 //Route for subdir
-app.use('/subdir', require('./routes/subdir'));
+// app.use('/subdir', require('./routes/subdir'));
 app.use('/employees', require('./routes/api/employees'));
 
 //Page not found 404 page 
 // insted of app.get 
     // app.get('/*', (req, res) => {
     // use app.all for all request
-app.all('/*', (req, res) => {
+app.all('*', (req, res) => {
     res.status(404);
     if(req.accepts('html')) {
         res.sendFile(path.join(__dirname, 'views', '404.html'));
