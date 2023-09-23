@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express')
 const app = express(); 
 const path = require('path')
@@ -5,6 +6,7 @@ const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
 const logEvents = require('./middleware/logger');
 const errorHandler = require('./middleware/errorHandler');
+const verifyJWT = require('./middleware/verifyJWT');
 
 //To create a server
 const PORT = process.env.PORT || 3500;
@@ -24,10 +26,12 @@ app.use('/', express.static(path.join(__dirname, '/public')));
 
 // SETUP ROUTE
 app.use('/', require('./routes/root'));
+app.use('/auth', require('./routes/auth'));
 app.use('/register', require('./routes/register'));
 
 //Route for subdir
 // app.use('/subdir', require('./routes/subdir'));
+app.use(verifyJWT);
 app.use('/employees', require('./routes/api/employees'));
 
 //Page not found 404 page 
