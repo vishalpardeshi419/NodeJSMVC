@@ -1,5 +1,5 @@
 const usersDB = {
-    users: require('../model/user.json'),
+    users: require('../model/users.json'),
     setUsers: function (data) { this.users = data }
 }
 const bcrypt = require('bcrypt');
@@ -9,16 +9,16 @@ const fsPromises = require('fs').promises;
 const path = require('path');
 
 const handleLogin = async (req, res) => {
+    console.log('foundUser');
     const { user, pwd } = req.body;
     if (!user || !pwd) return res.status(400).json({ 'message': 'Username and password are required.' });
     const foundUser = usersDB.users.find(person => person.username === user);
+    console.log('foundUser', foundUser)
     if (!foundUser) return res.sendStatus(401); //Unauthorized 
     // evaluate password
-    console.log('userPass' , foundUser.password, pwd);
     const match = await bcrypt.compare(pwd, foundUser.password);
     if (match) {
         const roles = Object.values(foundUser.roles);
-        console.log('vv',roles, foundUser.username, process.env.ACCESS_TOKEN_SECRET)
         // create JWTs
         const accessToken = jwt.sign(
             {
@@ -35,17 +35,16 @@ const handleLogin = async (req, res) => {
             process.env.REFRESH_TOKEN_SECRET,
             { expiresIn: '1d' }
         );
-        console.log('vSAVING', roles)
 
         // Saving refreshToken with current user
         const otherUsers = usersDB.users.filter(person => person.username !== foundUser.username);
         const currentUser = { ...foundUser, refreshToken };
         usersDB.setUsers([...otherUsers, currentUser]);
         await fsPromises.writeFile(
-            path.join(__dirname, '..', 'model', 'user.json'),
+            path.join(__dirname, '..', 'model', 'users.json'),
             JSON.stringify(usersDB.users)
         );
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: false , maxAge: 24 * 60 * 60 * 1000 });
         res.json({ accessToken });
     } else {
         res.sendStatus(401);
