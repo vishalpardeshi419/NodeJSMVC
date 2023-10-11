@@ -6,7 +6,7 @@ const Employee = require('../model/Employee')
         res.json(employees);
     }
 
-    const createEmployees = async (req, res) => {      
+    const createEmployees = async (req, res) => {
         if(!req?.body?.firstname || !req?.body?.lastname) {
             return res.status(204).json({'message': 'First and last name required'});
         }
@@ -39,7 +39,7 @@ const Employee = require('../model/Employee')
         res.json(result);
     }
 
-    const deleteEmployes = async ((req, res) => {
+    const deleteEmployes = async (req, res) => {
         if(!req?.body?.id ) {
             return res.status(400).json({ "message": `Employee ID ${req.body.id} not found` });
         }
@@ -50,7 +50,7 @@ const Employee = require('../model/Employee')
        
         const result = await employee.deleteOne({ _id: req.body.id });
         res.json(result);
-    });
+    };
 
     const getEmployees = async (req, res) => {
         if(!req?.params?.id ) {
